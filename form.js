@@ -29,4 +29,14 @@ function details(formblock){
     let objS = JSON.stringify(obj);
     localStorage.setItem(idn,objS);
     //let objD = JSON.parse(localStorage.getItem('obj'));
+    printOnScreen(obj);
 }
+
+function printOnScreen(obj){
+    var parentElem = document.getElementById('listOfStd');
+    
+    var childElem = document.createElement('li');
+    childElem.textContent = obj.id+' , '+obj.name+' , '+obj.dob+' , '+obj.mobile+' , '+obj.email;
+    parentElem.appendChild(childElem);
+}
+
