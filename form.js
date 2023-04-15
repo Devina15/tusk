@@ -46,6 +46,15 @@ function printOnScreen(obj,idn){
     deleteBtn.className = 'btn btn-danger delete';
     deleteBtn.appendChild(document.createTextNode('Delete'));
     childElem.appendChild(deleteBtn);   
+    
+    var editBtn = document.createElement('button');
+    editBtn.className = 'btn btn-secondary edit';
+    editBtn.setAttribute('id','edit-btn');
+    editBtn.appendChild(document.createTextNode('Edit'));
+    childElem.appendChild(editBtn);
+    
+    var changeItem = document.getElementById('edit-btn');
+    changeItem.addEventListener('click',editItem);
 }
 
 function removeItem(e){
@@ -58,4 +67,25 @@ function removeItem(e){
             
             }
     }
+}
+
+function editItem(e){
+    var li = e.target.parentElement;
+    
+    const key = e.target.parentElement.getAttribute('data-key');
+    let objD = JSON.parse(localStorage.getItem(key));
+    
+    var id = document.getElementById("idn");
+    id.value = objD.id;
+    var name = document.getElementById("name");
+    name.value = objD.name;
+    var dob = document.getElementById("dob");
+    dob.value = objD.dob;
+    var mobile = document.getElementById("mobile");
+    mobile.value = objD.mobile;
+    var email = document.getElementById("email");
+    email.value = objD.email;
+    
+    userList.removeChild(li);
+    localStorage.removeItem(key);
 }
