@@ -20,18 +20,15 @@ var userList = document.getElementById('listOfStd');
 userList.addEventListener('click',removeItem);
 
 function details(formblock){
-    var idn = document.getElementById("idn").value;
     let obj = {
-        id:document.getElementById("idn").value,
         name:document.getElementById("name").value,
         dob:document.getElementById("dob").value,
         mobile:document.getElementById("mobile").value,
         email:document.getElementById("email").value
     };
-    let objS = JSON.stringify(obj);
-    localStorage.setItem(idn,objS);
-    //let objD = JSON.parse(localStorage.getItem('obj'));
-    printOnScreen(obj,idn);
+    axios.post('https://crudcrud.com/api/fe0cd239ab1140e3829489bb93ce3915/userData', obj)
+        .then(res => printOnScreen(res.data,res.data._id))
+        .catch(err => console.log(err))
 }
 
 function printOnScreen(obj,idn){
@@ -39,7 +36,7 @@ function printOnScreen(obj,idn){
     var childElem = document.createElement('li');
     childElem.className = 'userDetails';
     childElem.setAttribute('data-key',idn);
-    childElem.textContent = obj.id+' , '+obj.name+' , '+obj.dob+' , '+obj.mobile+' , '+obj.email;
+    childElem.textContent = obj._id+' , '+obj.name+' , '+obj.dob+' , '+obj.mobile+' , '+obj.email;
     parentElem.appendChild(childElem);
     
     var deleteBtn = document.createElement('button');
@@ -56,6 +53,7 @@ function printOnScreen(obj,idn){
     var changeItem = document.getElementById('edit-btn');
     changeItem.addEventListener('click',editItem);
 }
+
 
 function removeItem(e){
     if(e.target.classList.contains('delete')){
