@@ -22,7 +22,7 @@ window .addEventListener("DOMContentLoaded",()=>{
         .get('https://crudcrud.com/api/fe0cd239ab1140e3829489bb93ce3915/userData')
         .then(res => {
         for(var i=0;i<res.data.length;i++){
-            printOnScreen(res.data[i],res.data._id)
+            printOnScreen(res.data[i],res.data[i]._id)
         }
     })
         .catch(err => console.log(err))
@@ -79,10 +79,19 @@ function printOnScreen(obj,idn){
 function removeItem(e){
     if(e.target.classList.contains('delete')){
         if(confirm('Are you sure?')){
+            
             var li = e.target.parentElement;
-            const key = e.target.parentElement.getAttribute('data-key');
+            const _id = e.target.parentElement.getAttribute('data-key');
+            
+            
+            let url = "https://crudcrud.com/api/cfa0aa7da5584ab7a907227c4a46a102/userData/"+ _id
+            axios
+                .delete(url)
+                .then(res => showOutput(res))
+                .catch(err => console.log(err))
+            
             userList.removeChild(li);
-            localStorage.removeItem(key);
+            //localStorage.removeItem(key);
             
             }
     }
