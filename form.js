@@ -16,6 +16,27 @@ l3.addEventListener('mouseout',(e)=> {
     document.querySelector('#formblock').style.background = 'beige'; 
 });
 
+window .addEventListener("DOMContentLoaded",()=>{
+    
+    axios
+        .get('https://crudcrud.com/api/fe0cd239ab1140e3829489bb93ce3915/userData')
+        .then(res => {
+        for(var i=0;i<res.data.length;i++){
+            printOnScreen(res.data[i],res.data._id)
+        }
+    })
+        .catch(err => console.log(err))
+    
+    //const localStorageObj = localStorage;
+    //const localStoragekeys = Object.keys(localStorageObj)
+    
+    //for(var i=0;i<localStoragekeys.length;i++){
+        //const key = localStorageKeys[i]
+        //const userDetailsString = localStorageObj[key];
+        //const userDetailsObj = JSON.parse(userDetailsString);
+        //printOnScreen(userDetailsObj,key)
+    //}
+})
 var userList = document.getElementById('listOfStd');
 userList.addEventListener('click',removeItem);
 
