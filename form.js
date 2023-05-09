@@ -16,10 +16,13 @@ l3.addEventListener('mouseout',(e)=> {
     document.querySelector('#formblock').style.background = 'beige'; 
 });
 
-window .addEventListener("DOMContentLoaded",()=>{
+var userList = document.getElementById('listOfStd');
+userList.addEventListener('click',removeItem);
+
+window.addEventListener("DOMContentLoaded",()=>{
     
     axios
-        .get('https://crudcrud.com/api/fe0cd239ab1140e3829489bb93ce3915/userData')
+        .get('https://crudcrud.com/api/93de451a79af4b23abf12bf7e0e95caf/userData')
         .then(res => {
         for(var i=0;i<res.data.length;i++){
             printOnScreen(res.data[i],res.data[i]._id)
@@ -37,8 +40,6 @@ window .addEventListener("DOMContentLoaded",()=>{
         //printOnScreen(userDetailsObj,key)
     //}
 })
-var userList = document.getElementById('listOfStd');
-userList.addEventListener('click',removeItem);
 
 function details(formblock){
     let obj = {
@@ -47,7 +48,7 @@ function details(formblock){
         mobile:document.getElementById("mobile").value,
         email:document.getElementById("email").value
     };
-    axios.post('https://crudcrud.com/api/fe0cd239ab1140e3829489bb93ce3915/userData', obj)
+    axios.post('https://crudcrud.com/api/93de451a79af4b23abf12bf7e0e95caf/userData', obj)
         .then(res => printOnScreen(res.data,res.data._id))
         .catch(err => console.log(err))
 }
@@ -57,7 +58,7 @@ function printOnScreen(obj,idn){
     var childElem = document.createElement('li');
     childElem.className = 'userDetails';
     childElem.setAttribute('data-key',idn);
-    childElem.textContent = obj._id+' , '+obj.name+' , '+obj.dob+' , '+obj.mobile+' , '+obj.email;
+    childElem.textContent = obj.name+' , '+obj.dob+' , '+obj.mobile+' , '+obj.email;
     parentElem.appendChild(childElem);
     
     var deleteBtn = document.createElement('button');
@@ -75,7 +76,6 @@ function printOnScreen(obj,idn){
     changeItem.addEventListener('click',editItem);
 }
 
-
 function removeItem(e){
     if(e.target.classList.contains('delete')){
         if(confirm('Are you sure?')){
@@ -84,10 +84,10 @@ function removeItem(e){
             const _id = e.target.parentElement.getAttribute('data-key');
             
             
-            let url = "https://crudcrud.com/api/cfa0aa7da5584ab7a907227c4a46a102/userData/"+ _id
+            let url = "https://crudcrud.com/api/93de451a79af4b23abf12bf7e0e95caf/userData/"+ _id
             axios
                 .delete(url)
-                .then(res => showOutput(res))
+                .then(res => console.log(res))
                 .catch(err => console.log(err))
             
             userList.removeChild(li);
@@ -100,20 +100,28 @@ function removeItem(e){
 function editItem(e){
     var li = e.target.parentElement;
     
-    const key = e.target.parentElement.getAttribute('data-key');
-    let objD = JSON.parse(localStorage.getItem(key));
-    
-    var id = document.getElementById("idn");
-    id.value = objD.id;
     var name = document.getElementById("name");
-    name.value = objD.name;
     var dob = document.getElementById("dob");
-    dob.value = objD.dob;
     var mobile = document.getElementById("mobile");
-    mobile.value = objD.mobile;
     var email = document.getElementById("email");
-    email.value = objD.email;
     
+    const key = e.target.parentElement.getAttribute('data-key');
+    const link = 'https://crudcrud.com/api/93de451a79af4b23abf12bf7e0e95caf/userData/'+key
+    axios
+        .get(link)
+        .then(res => {
+        name.value = res.data.name
+        dob.value = res.data.dob
+        mobile.value = res.data.mobile
+        email.value = res.data.email
+    })
+        .catch(err => console.log(err))
+    //let objD = JSON.parse(localStorage.getItem(key));
+            axios
+                .delete(link)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+            
     userList.removeChild(li);
-    localStorage.removeItem(key);
+    //localStorage.removeItem(key);
 }
